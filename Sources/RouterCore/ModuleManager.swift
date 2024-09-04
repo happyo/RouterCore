@@ -30,7 +30,7 @@ public class ModuleManager {
             EmptyView()
         }
     }
-
+    
     public func performAction<Route: ModuleRoute>(route: Route) {
         if let provider: AnyModuleProvider<Route> = providerFor(route: route) {
             provider.performAction(route: route)

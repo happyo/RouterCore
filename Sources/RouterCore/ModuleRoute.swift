@@ -6,7 +6,7 @@ import Foundation
 
 public protocol ModuleRoute: Hashable {
     static func key() -> String
-    static func isAction() -> Bool
+    func isAction() -> Bool
 }
 
 public extension ModuleRoute {
@@ -14,7 +14,7 @@ public extension ModuleRoute {
         return String(describing: type(of: self))
     }
 
-    static func isAction() -> Bool {
+    func isAction() -> Bool {
         return false
     }
 }
