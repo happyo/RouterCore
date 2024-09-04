@@ -4,7 +4,7 @@
 
 import Foundation
 
-public protocol ModuleRoute {
+public protocol ModuleRoute: Hashable {
     static func key() -> String
 }
 
