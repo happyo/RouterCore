@@ -4,6 +4,7 @@
 
 import SwiftUI
 
+@MainActor
 public protocol ModuleProvider {
     associatedtype Content: View
     associatedtype RouteType: ModuleRoute

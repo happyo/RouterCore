@@ -118,7 +118,7 @@ public class SettingPageProvider: ModuleProvider {
 
 // RouterLayer
 
-public class HomePageRoute: ModuleRoute {
+public struct HomePageRoute: ModuleRoute {
     public var name: String
     
     public init(name: String) {
@@ -132,7 +132,7 @@ public class HomePageRoute: ModuleRoute {
     
 }
 
-public class HomePrintRoute: ModuleRoute {
+public struct HomePrintRoute: ModuleRoute {
     public var name: String
     
     public init(name: String) {
@@ -140,24 +140,21 @@ public class HomePrintRoute: ModuleRoute {
     }
 }
 
-public class SettingRouter: ModuleRoute {
+public struct SettingRouter: ModuleRoute {
     public init() {
         
     }
     
 }
 
-public class HomeModule: Module {
+public struct HomeModule: Module {
     public static func setup() {
         ModuleManager.shared.registerProvider(HomePageProvider())
         ModuleManager.shared.registerProvider(HomePrintProvider())
-
     }
-    
-    
 }
 
-public class SettingModule: Module {
+public struct SettingModule: Module {
     public static func setup() {
         ModuleManager.shared.registerProvider(SettingPageProvider())
     }

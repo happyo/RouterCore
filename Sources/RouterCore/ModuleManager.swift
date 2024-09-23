@@ -3,10 +3,12 @@
 //
 import SwiftUI
 
+@MainActor
 public protocol Module {
     static func setup()
 }
 
+@MainActor
 public class ModuleManager {
     private var providers: [String: Any] = [:]
 
