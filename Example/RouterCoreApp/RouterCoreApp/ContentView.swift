@@ -9,6 +9,8 @@ import SwiftUI
 import RouterCore
 
 struct ContentView: View {
+    @State private var currentRoute: AnyModuleRoute?
+    
     init() {
         use()
     }
@@ -31,6 +33,9 @@ struct ContentView: View {
 
             }
             .padding()
+        }
+        .sheet(item: $currentRoute) { route in
+            ModuleManager.shared.viewFor(route: route)
         }
         
     }
