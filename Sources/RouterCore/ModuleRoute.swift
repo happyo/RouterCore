@@ -2,13 +2,13 @@
 //  Created by belyenochi on 2024/05/30.
 //
 
-import Foundation
+import SwiftUI
 
 public protocol ModuleRoute: Hashable {
     static func key() -> String
     func isAction() -> Bool
     func showSystemNavBar() -> Bool
-    func isClearBackground() -> Bool
+    func clearBackground() -> Color?
 }
 
 public extension ModuleRoute {
@@ -24,8 +24,8 @@ public extension ModuleRoute {
         return false
     }
 
-    func isClearBackground() -> Bool {
-        return false
+    func clearBackground() -> Color? {
+        Color.clear
     }
 }
 
@@ -42,7 +42,7 @@ public struct AnyModuleRoute: ModuleRoute, Identifiable {
     private let _key: () -> String
     private let _isAction: () -> Bool
     private let _showSystemNavBar: () -> Bool
-    private let _isClearBackground: () -> Bool
+    private let _clearBackground: () -> Color?
     private let _hashValue: () -> Int
     private let _equals: (Any) -> Bool
 
@@ -50,7 +50,7 @@ public struct AnyModuleRoute: ModuleRoute, Identifiable {
         _key = { T.key() }
         _isAction = { route.isAction() }
         _showSystemNavBar = { route.showSystemNavBar() }
-        _isClearBackground = { route.isClearBackground() }
+        _clearBackground = { route.clearBackground()() }
         _hashValue = { route.hashValue }
         _equals = { other in
             guard let otherRoute = other as? T else { return false }
@@ -69,6 +69,10 @@ public struct AnyModuleRoute: ModuleRoute, Identifiable {
 
     public func showSystemNavBar() -> Bool {
         _showSystemNavBar()
+    }
+
+    public func clearBackground() -> Color? {
+        _clearBackground()
     }
 
     // Implementing Hashable
