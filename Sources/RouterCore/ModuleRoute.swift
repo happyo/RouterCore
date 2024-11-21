@@ -50,7 +50,7 @@ public struct AnyModuleRoute: ModuleRoute, Identifiable {
         _key = { T.key() }
         _isAction = { route.isAction() }
         _showSystemNavBar = { route.showSystemNavBar() }
-        _clearBackground = { route.clearBackground()() }
+        _clearBackground = { route.clearBackground() }
         _hashValue = { route.hashValue }
         _equals = { other in
             guard let otherRoute = other as? T else { return false }
