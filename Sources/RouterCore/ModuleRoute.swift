@@ -25,7 +25,7 @@ public extension ModuleRoute {
     }
 
     func clearBackground() -> Color? {
-        Color.clear
+        nil
     }
 }
 
