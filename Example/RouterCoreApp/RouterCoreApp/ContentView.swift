@@ -10,13 +10,14 @@ import RouterCore
 
 struct ContentView: View {
     @State private var currentRoute: AnyModuleRoute?
+    @State private var navigationPath = NavigationPath()
     
     init() {
         use()
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack(path: $navigationPath) {
             VStack {
                 Image(systemName: "globe")
                     .imageScale(.large)
@@ -31,6 +32,13 @@ struct ContentView: View {
                     ModuleManager.shared.performAction(route: HomePrintRoute(name: "haha"))
                 }
 
+                Button("Go next home") {
+                    navigationPath.append(PathRoute(router: HomePageRoute(name: "hahah")))
+                }
+
+            }
+            .navigationDestination(for: PathRoute.self) { route in
+                AnyView(ModuleManager.shared.viewFor(route: route.router))
             }
             .padding()
         }

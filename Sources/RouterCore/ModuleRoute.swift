@@ -4,6 +4,22 @@
 
 import SwiftUI
 
+public struct PathRoute: Hashable, Equatable {
+    public var router: any ModuleRoute
+    
+    public init(router: any ModuleRoute) {
+        self.router = router
+    }
+    
+    public static func ==(lhs: PathRoute, rhs: PathRoute) -> Bool {
+        return lhs.router.hashValue == rhs.router.hashValue
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(router)
+    }
+}
+
 public protocol ModuleRoute: Hashable {
     static func key() -> String
     func isAction() -> Bool
