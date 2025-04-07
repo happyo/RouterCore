@@ -9,7 +9,7 @@ import SwiftUI
 import RouterCore
 
 struct ContentView: View {
-    @State private var currentRoute: AnyModuleRoute?
+    @State private var currentRoute: PathRoute?
     @State private var navigationPath = NavigationPath()
     
     init() {
@@ -33,7 +33,8 @@ struct ContentView: View {
                 }
 
                 Button("Go next home") {
-                    navigationPath.append(PathRoute(router: HomePageRoute(name: "hahah")))
+//                    navigationPath.append(PathRoute(router: HomePageRoute(name: "hahah")))
+                    currentRoute = PathRoute(router: HomePageRoute(name: "hahah"))
                 }
 
             }
@@ -43,7 +44,7 @@ struct ContentView: View {
             .padding()
         }
         .sheet(item: $currentRoute) { route in
-            ModuleManager.shared.viewFor(route: route)
+            AnyView(ModuleManager.shared.viewFor(route: route.router))
         }
         
     }

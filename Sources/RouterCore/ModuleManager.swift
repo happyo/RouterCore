@@ -17,11 +17,11 @@ public class ModuleManager {
     private init() {}
 
     public func registerProvider<Route: ModuleRoute, Provider: ModuleProvider>(_ provider: Provider) where Provider.RouteType == Route {
-        providers[String(describing: Route.self)] = AnyModuleProvider(provider)
+        providers[Route.key()] = AnyModuleProvider(provider)
     }
 
     private func providerFor<Route: ModuleRoute>(route: Route) -> AnyModuleProvider<Route>? {
-        providers[String(describing: Route.self)] as? AnyModuleProvider<Route>
+        providers[Route.key()] as? AnyModuleProvider<Route>
     }
     
     @ViewBuilder
