@@ -136,6 +136,22 @@ public class NavigationCoordinator: ObservableObject {
     }
 }
 
+/// 全局内容装饰器：宿主 app 在启动时设置一次，用于在每个被路由展示的目标根部
+/// 重新注入跨环境树无法自动穿透的环境值（如自定义 `\.ptTheme` EnvironmentKey）。
+///
+/// RouterCore 保持零依赖：不 import 具体主题库，只暴露这个 `(AnyView) -> AnyView` 钩子。
+@MainActor
+public enum RouterContentDecorator {
+    public static var decorate: (@MainActor (AnyView) -> AnyView)?
+
+    static func apply<V: View>(_ view: V) -> AnyView {
+        if let decorate {
+            return decorate(AnyView(view))
+        }
+        return AnyView(view)
+    }
+}
+
 public struct NavigationWrapperModifier: ViewModifier {
     @ObservedObject public var node: NavigationNode
 
@@ -147,22 +163,28 @@ public struct NavigationWrapperModifier: ViewModifier {
         NavigationStack(path: $node.path) {
             content
                 .navigationDestination(for: PathRoute.self) { path in
-                    AnyView(ModuleManager.shared.viewFor(route: path.router))
+                    RouterContentDecorator.apply(ModuleManager.shared.viewFor(route: path.router))
                 }
         }
         .sheet(item: $node.sheetItem) { item in
-            anyView(for: item)
-                .modifier(NavigationWrapperModifier(node: item))
+            RouterContentDecorator.apply(
+                anyView(for: item)
+                    .modifier(NavigationWrapperModifier(node: item))
+            )
         }
         #if os(iOS)
         .fullScreenCover(item: $node.fullItem) { item in
-            anyView(for: item)
-                .modifier(NavigationWrapperModifier(node: item))
+            RouterContentDecorator.apply(
+                anyView(for: item)
+                    .modifier(NavigationWrapperModifier(node: item))
+            )
         }
         #else
         .sheet(item: $node.fullItem) { item in
-            anyView(for: item)
-                .modifier(NavigationWrapperModifier(node: item))
+            RouterContentDecorator.apply(
+                anyView(for: item)
+                    .modifier(NavigationWrapperModifier(node: item))
+            )
         }
         #endif
     }
